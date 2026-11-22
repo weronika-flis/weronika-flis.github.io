@@ -1,10 +1,10 @@
 /* Background scene: phylogenetic/evolutionary tree growing on scroll +
-   anthropometric & cranial geometric morphometrics landmark coordinate ring */
+   anatomical skull (forensic anthropology & osteology motif) */
 (()=>{const RM=matchMedia('(prefers-reduced-motion: reduce)').matches,NS='http://www.w3.org/2000/svg';
 const host=document.createElement('div');host.id='scene';host.setAttribute('aria-hidden','true');
 const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
 
-/* ---------- tree ---------- */
+/* ---------- tree (right side, grows on scroll) ---------- */
 const tree=el('svg',{class:'tree',viewBox:'0 0 600 1000',preserveAspectRatio:'xMidYMax meet'},host);
 let seed=19;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 const parts=[];
@@ -23,34 +23,58 @@ function branch(x,y,ang,len,w,d,t0){
 branch(300,1000,Math.PI/2,165,20,7,0);
 const maxE=Math.max(...parts.map(p=>p.e));parts.forEach(p=>{p.s/=maxE;p.e/=maxE});
 
-/* ---------- anthropometric coordinate & morphometric landmark ring ---------- */
-const ring=el('svg',{class:'pet',viewBox:'-110 -110 220 220'},host);
-const rot=el('g',{class:'rot'},ring);
-for(let i=0;i<36;i++){const a=i/36*360;el('rect',{x:-2,y:-95,width:4,height:i%3===0?14:8,rx:1,transform:`rotate(${a})`,class:'det'},rot)}
-el('circle',{r:78,class:'bore'},ring);
-el('circle',{r:52,class:'bore',style:'opacity:0.35;stroke-dasharray:3 4'},ring);
-const lors=el('g',{},ring);
-function fire(){
-  const a=Math.random()*Math.PI*2,r1=22+Math.random()*48,r2=22+Math.random()*48;
-  const x1=Math.cos(a)*r1,y1=Math.sin(a)*r1;
-  const a2=a+Math.PI*(0.55+Math.random()*0.9);
-  const x2=Math.cos(a2)*r2,y2=Math.sin(a2)*r2;
-  const l=el('line',{x1,y1,x2,y2,class:'lor'},lors);
-  el('circle',{cx:x1,cy:y1,r:2.4,class:'ann'},lors);
-  el('circle',{cx:x2,cy:y2,r:2.4,class:'ann'},lors);
-  setTimeout(()=>{
-    for(let i=0;i<3;i++){if(lors.firstChild)lors.removeChild(lors.firstChild)}
-  },1800);
-}
+/* ---------- anatomical skull (left side) ---------- */
+const skull=el('svg',{class:'skull',viewBox:'-115 -145 230 270'},host);
+
+// cranium outline
+el('ellipse',{cx:'0',cy:'-50',rx:'100',ry:'92',class:'sk-bone','stroke-width':'3'},skull);
+
+// zygomatic arch hints (cheekbones)
+el('path',{d:'M-100,-20 Q-115,10 -95,38 Q-80,20 -72,5',class:'sk-bone','stroke-width':'2'},skull);
+el('path',{d:'M100,-20 Q115,10 95,38 Q80,20 72,5',class:'sk-bone','stroke-width':'2'},skull);
+
+// lower face / maxilla region
+el('path',{d:'M-72,5 Q-68,55 -50,80 Q-25,100 0,102 Q25,100 50,80 Q68,55 72,5',class:'sk-bone','stroke-width':'2.5'},skull);
+
+// left orbit (eye socket)
+el('ellipse',{cx:'-38',cy:'-38',rx:'30',ry:'24',class:'sk-socket'},skull);
+// right orbit
+el('ellipse',{cx:'38',cy:'-38',rx:'30',ry:'24',class:'sk-socket'},skull);
+
+// nasal aperture (pyriform)
+el('path',{d:'M-15,-5 Q-18,16 -12,30 Q-6,38 0,40 Q6,38 12,30 Q18,16 15,-5 Q8,-14 0,-16 Q-8,-14 -15,-5Z',class:'sk-socket'},skull);
+
+// coronal suture
+el('path',{d:'M-78,-105 Q-50,-118 -20,-120 Q0,-122 20,-120 Q50,-118 78,-105',class:'sk-suture','stroke-width':'1.5'},skull);
+// sagittal suture
+el('path',{d:'M0,-122 Q4,-85 2,-55 Q-2,-30 0,-16',class:'sk-suture','stroke-width':'1.5'},skull);
+// lambdoid suture hint
+el('path',{d:'M-78,-105 Q-95,-75 -88,-50',class:'sk-suture','stroke-width':'1.2'},skull);
+el('path',{d:'M78,-105 Q95,-75 88,-50',class:'sk-suture','stroke-width':'1.2'},skull);
+// squamosal suture
+el('path',{d:'M-100,-20 Q-96,-50 -84,-70',class:'sk-suture','stroke-width':'1.2'},skull);
+el('path',{d:'M100,-20 Q96,-50 84,-70',class:'sk-suture','stroke-width':'1.2'},skull);
+
+// teeth — upper row (5 teeth)
+const toothData=[
+  {x:-46,y:84,w:14,h:17},
+  {x:-30,y:86,w:16,h:19},
+  {x:-11,y:88,w:22,h:21},
+  {x:14, y:86,w:16,h:19},
+  {x:32, y:84,w:14,h:17}
+];
+toothData.forEach(t=>{el('rect',{x:t.x,y:t.y,width:t.w,height:t.h,rx:'4',class:'sk-tooth'},skull)});
+
+// inter-tooth lines
+[-15,-0].forEach(x=>el('line',{x1:x,y1:86,x2:x,y2:106,class:'sk-bone','stroke-width':'1'},skull));
 
 document.body.prepend(host);
 
-/* grow on scroll */
+/* grow tree on scroll */
 let raf=0;function grow(){raf=0;
   const max=document.documentElement.scrollHeight-innerHeight,p=RM?1:Math.min(1,.12+.95*scrollY/Math.max(1,max));
   for(const q of parts){const k=Math.max(0,Math.min(1,(p-q.s)/(q.e-q.s)));
     if(q.type==='br')q.n.style.strokeDashoffset=1-k;else q.n.style.transform=`scale(${k})`}}
 addEventListener('scroll',()=>{raf||(raf=requestAnimationFrame(grow))},{passive:true});
 addEventListener('resize',grow);grow();
-if(!RM){fire();setInterval(()=>{if(!document.hidden)fire()},1100)}else{for(let i=0;i<5;i++)fire()}
 })();
