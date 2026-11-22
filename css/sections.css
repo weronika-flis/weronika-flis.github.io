@@ -1,28 +1,16 @@
-/* Background scene: scroll-grown tree + anatomical skeleton (js/14-scene.js) */
-:root{--trunk:#8a6a4f;--leaf:#5fb98f;--bud:#f08fb0;--det:#0e8f74;--scene-op:.26}
-[data-theme=dark]{--trunk:#a89580;--leaf:#4fd1a5;--bud:#ff9ec0;--det:#6ee7c8;--scene-op:.2}
+/* Background scene: scroll-grown tree + skeleton cut-out (js/14-scene.js) */
+:root{--trunk:#8a6a4f;--leaf:#5fb98f;--bud:#f08fb0;--det:#0e8f74;--scene-op:.28}
+[data-theme=dark]{--trunk:#a89580;--leaf:#4fd1a5;--bud:#ff9ec0;--det:#6ee7c8;--scene-op:.22}
 #scene{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--scene-op);transition:opacity .6s}
 #scene .tree{overflow:visible;position:absolute;right:-4vw;bottom:0;height:100vh;width:min(48vw,620px)}
 #scene .br{fill:none;stroke:var(--trunk);stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
 #scene .lf,#scene .bud{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .4s}
 #scene .lf{fill:var(--leaf);opacity:.8}#scene .bud{fill:var(--bud)}
-/* anatomical skeleton */
-#scene .skull{position:absolute;left:-76px;top:50%;width:min(46vh,400px);overflow:visible;transform-origin:50% 42%;transform:translateY(-50%);animation:skull-sway 13s ease-in-out infinite alternate}
-#scene .sk-halo{fill:var(--det);opacity:.05}
-#scene .sk-plate{fill:url(#skBone);stroke:var(--det);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-#scene .sk-line{fill:none;stroke:var(--det);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-#scene .sk-line.brow{stroke-width:2.6}
-#scene .sk-fine{fill:none;stroke:var(--det);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:.78}
-#scene .sk-suture{fill:none;stroke:var(--det);stroke-width:1.1;stroke-dasharray:3 3;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
-#scene .sk-socket{fill:color-mix(in srgb,var(--det) 42%,var(--bg));stroke:var(--det);stroke-width:1.6}
-#scene .sk-tooth{fill:color-mix(in srgb,var(--det) 22%,transparent);stroke:var(--det);stroke-width:1.1;stroke-linejoin:round}
-#scene .sk-dot{fill:var(--det)}
-#scene .sk-rib{fill:none;stroke:var(--det);stroke-width:1.4;stroke-linecap:round;opacity:.7}
-#scene .sk-g0{stop-color:var(--det);stop-opacity:.02}
-#scene .sk-g1{stop-color:var(--det);stop-opacity:.14}
-#scene .sk-g2{stop-color:var(--det);stop-opacity:.05}
-@keyframes skull-sway{from{transform:translateY(-50%) rotate(-3deg)}to{transform:translateY(-50%) rotate(3deg)}}
+/* skeleton cut-out — tinted to sit quietly behind the content */
+#scene .skeleton{position:absolute;left:-32px;top:50%;height:min(82vh,760px);width:auto;max-width:none;transform:translateY(-50%);transform-origin:50% 45%;user-select:none;pointer-events:none;filter:grayscale(1) brightness(.48) sepia(1) hue-rotate(125deg) saturate(2.2);animation:skeleton-sway 14s ease-in-out infinite alternate}
+[data-theme=dark] #scene .skeleton{filter:grayscale(1) brightness(1.05) sepia(.75) hue-rotate(125deg) saturate(1.5)}
+@keyframes skeleton-sway{from{transform:translateY(-50%) rotate(-2.5deg)}to{transform:translateY(-50%) rotate(2.5deg)}}
 /* flowers become quieter now the scene carries the mood */
 :root{--bloom-op:.2}[data-theme=dark]{--bloom-op:.07}
-@media(max-width:700px){:root{--scene-op:.18}[data-theme=dark]{--scene-op:.14}#scene .tree{width:85vw;right:-30vw}#scene .skull{width:240px;top:auto;bottom:-130px;left:-100px;transform:none;animation:none}#tpanel{right:12px;left:auto;width:min(230px,calc(100vw - 24px))}}
-@media(prefers-reduced-motion:reduce){#scene .skull{animation:none}}
+@media(max-width:700px){:root{--scene-op:.18}[data-theme=dark]{--scene-op:.14}#scene .tree{width:85vw;right:-30vw}#scene .skeleton{height:300px;top:auto;bottom:-90px;left:-70px;transform:none;animation:none}#tpanel{right:12px;left:auto;width:min(230px,calc(100vw - 24px))}}
+@media(prefers-reduced-motion:reduce){#scene .skeleton{animation:none}}
