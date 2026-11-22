@@ -23,50 +23,91 @@ function branch(x,y,ang,len,w,d,t0){
 branch(300,1000,Math.PI/2,165,20,7,0);
 const maxE=Math.max(...parts.map(p=>p.e));parts.forEach(p=>{p.s/=maxE;p.e/=maxE});
 
-/* ---------- anatomical skull (left side) ---------- */
-const skull=el('svg',{class:'skull',viewBox:'-115 -145 230 270'},host);
+/* ---------- anatomical human skeleton: skull, jaw, cervical spine & thorax ---------- */
+const skull=el('svg',{class:'skull',viewBox:'-130 -170 260 445'},host);
 
-// cranium outline
-el('ellipse',{cx:'0',cy:'-50',rx:'100',ry:'92',class:'sk-bone','stroke-width':'3'},skull);
+/* bone wash + a very soft halo */
+const defs=el('defs',{},skull);
+const bone=el('linearGradient',{id:'skBone',x1:'0',y1:'0',x2:'0.9',y2:'1'},defs);
+el('stop',{offset:'0','class':'sk-g0'},bone);
+el('stop',{offset:'.55','class':'sk-g1'},bone);
+el('stop',{offset:'1','class':'sk-g2'},bone);
+el('ellipse',{cx:'0',cy:'-58',rx:'114',ry:'124',class:'sk-halo'},skull);
 
-// zygomatic arch hints (cheekbones)
-el('path',{d:'M-100,-20 Q-115,10 -95,38 Q-80,20 -72,5',class:'sk-bone','stroke-width':'2'},skull);
-el('path',{d:'M100,-20 Q115,10 95,38 Q80,20 72,5',class:'sk-bone','stroke-width':'2'},skull);
+/* neurocranium — rounded vault tapering into the temples */
+el('path',{d:'M0,-150 C46,-150 82,-124 96,-80 C106,-48 102,-14 86,4 C78,13 68,17 56,19 L-56,19 C-68,17 -78,13 -86,4 C-102,-14 -106,-48 -96,-80 C-82,-124 -46,-150 0,-150 Z',class:'sk-plate'},skull);
 
-// lower face / maxilla region
-el('path',{d:'M-72,5 Q-68,55 -50,80 Q-25,100 0,102 Q25,100 50,80 Q68,55 72,5',class:'sk-bone','stroke-width':'2.5'},skull);
+/* ---- left half of the face; mirrored for perfect anatomical symmetry ---- */
+const half=el('g',{id:'skHalf'},skull);
 
-// left orbit (eye socket)
-el('ellipse',{cx:'-38',cy:'-38',rx:'30',ry:'24',class:'sk-socket'},skull);
-// right orbit
-el('ellipse',{cx:'38',cy:'-38',rx:'30',ry:'24',class:'sk-socket'},skull);
+// supraorbital ridge + notch (heavy brow, not an owl's "ears")
+el('path',{d:'M-84,-45 C-66,-59 -32,-59 -12,-46',class:'sk-line brow'},half);
+el('path',{d:'M-48,-54 q5,-7 11,-1',class:'sk-fine'},half);
 
-// nasal aperture (pyriform)
-el('path',{d:'M-15,-5 Q-18,16 -12,30 Q-6,38 0,40 Q6,38 12,30 Q18,16 15,-5 Q8,-14 0,-16 Q-8,-14 -15,-5Z',class:'sk-socket'},skull);
+// orbit: angular quadrilateral with a sloping roof
+el('path',{d:'M-20,-42 C-36,-50 -60,-48 -72,-36 C-77,-28 -73,-15 -66,-8 C-54,-2 -34,-2 -24,-7 C-18,-12 -16,-32 -20,-42 Z',class:'sk-plate orbit'},half);
+el('path',{d:'M-69,-34 C-57,-44 -36,-45 -23,-38',class:'sk-fine'},half);
 
-// coronal suture
-el('path',{d:'M-78,-105 Q-50,-118 -20,-120 Q0,-122 20,-120 Q50,-118 78,-105',class:'sk-suture','stroke-width':'1.5'},skull);
-// sagittal suture
-el('path',{d:'M0,-122 Q4,-85 2,-55 Q-2,-30 0,-16',class:'sk-suture','stroke-width':'1.5'},skull);
-// lambdoid suture hint
-el('path',{d:'M-78,-105 Q-95,-75 -88,-50',class:'sk-suture','stroke-width':'1.2'},skull);
-el('path',{d:'M78,-105 Q95,-75 88,-50',class:'sk-suture','stroke-width':'1.2'},skull);
-// squamosal suture
-el('path',{d:'M-100,-20 Q-96,-50 -84,-70',class:'sk-suture','stroke-width':'1.2'},skull);
-el('path',{d:'M100,-20 Q96,-50 84,-70',class:'sk-suture','stroke-width':'1.2'},skull);
+// zygomatic bone + arch swept backwards and down
+el('path',{d:'M-72,-36 C-84,-28 -88,-8 -79,8 C-71,21 -56,22 -46,14 L-52,-2 Z',class:'sk-plate'},half);
+el('path',{d:'M-82,2 C-96,4 -104,-4 -104,-16',class:'sk-line'},half);
+el('path',{d:'M-67,10 C-60,15 -54,15 -48,10',class:'sk-fine'},half);
 
-// teeth — upper row (5 teeth)
-const toothData=[
-  {x:-46,y:84,w:14,h:17},
-  {x:-30,y:86,w:16,h:19},
-  {x:-11,y:88,w:22,h:21},
-  {x:14, y:86,w:16,h:19},
-  {x:32, y:84,w:14,h:17}
-];
-toothData.forEach(t=>{el('rect',{x:t.x,y:t.y,width:t.w,height:t.h,rx:'4',class:'sk-tooth'},skull)});
+// infraorbital foramen and canal
+el('circle',{cx:-40,cy:2,r:2.6,class:'sk-dot'},half);
+el('path',{d:'M-40,5 l0,8',class:'sk-fine'},half);
 
-// inter-tooth lines
-[-15,-0].forEach(x=>el('line',{x1:x,y1:86,x2:x,y2:106,class:'sk-bone','stroke-width':'1'},skull));
+// maxilla / upper alveolar process
+el('path',{d:'M-56,19 C-58,38 -52,60 -42,74 C-34,84 -18,90 0,90 L0,19 Z',class:'sk-plate'},half);
+
+// facial sutures and quiet shading hatch
+el('path',{d:'M-86,-72 C-74,-78 -62,-78 -52,-71',class:'sk-suture'},half);
+el('path',{d:'M-77,-9 C-71,4 -64,12 -56,19',class:'sk-suture'},half);
+for(let i=0;i<6;i++){const y=-102+i*13;el('line',{x1:-94+i,y1:y,x2:-85+i,y2:y+6,class:'sk-fine'},half)}
+
+// upper dentition — 16 individually shaped teeth following the arch
+const upX=[6,16,25,33,40,46,51,55],upW=[11,10,9,9,8,8,7,7],upH=[15,16,16,15,14,13,13,12];
+for(let i=0;i<8;i++){
+  const cx=-upX[i],w=upW[i],h=upH[i],yb=90-0.006*cx*cx;
+  el('path',{d:`M${cx-w/2},${yb-h} Q${cx},${yb-h-2} ${cx+w/2},${yb-h} L${cx+w/2-1},${yb} Q${cx},${yb+2} ${cx-w/2+1},${yb} Z`,class:'sk-tooth'},half);
+  el('line',{x1:cx,y1:yb-h+4,x2:cx,y2:yb-3,class:'sk-fine'},half);
+}
+
+// mandible half — condyle, ramus, angle, body and chin
+el('path',{d:'M0,110 C-14,110 -30,104 -44,92 C-60,78 -70,58 -73,36 L-77,4 C-79,-6 -76,-12 -70,-10 C-65,-8 -64,-2 -64,6 L-61,36 C-59,56 -50,72 -36,82 C-24,91 -12,95 0,95 Z',class:'sk-plate'},half);
+el('path',{d:'M-64,-2 C-60,-12 -52,-14 -48,-8 L-56,14 Z',class:'sk-plate'},half); // coronoid process
+el('circle',{cx:-38,cy:84,r:2.4,class:'sk-dot'},half); // mental foramen
+const loX=[6,16,25,33,40,46,51,55],loW=[10,10,9,9,8,8,7,7],loH=[14,15,15,14,13,13,12,12];
+for(let i=0;i<8;i++){
+  const cx=-loX[i],w=loW[i],h=loH[i],yt=95-0.006*cx*cx;
+  el('path',{d:`M${cx-w/2},${yt} Q${cx},${yt-2} ${cx+w/2},${yt} L${cx+w/2-1},${yt+h} Q${cx},${yt+h+2} ${cx-w/2+1},${yt+h} Z`,class:'sk-tooth'},half);
+}
+
+el('use',{href:'#skHalf',transform:'scale(-1,1)'},skull);
+
+/* central anatomy */
+el('path',{d:'M-7,-16 C-10,-6 -13,8 -16,20 C-14,26 -8,28 0,28 C8,28 14,26 16,20 C13,8 10,-6 7,-16 C4,-20 -4,-20 -7,-16 Z',class:'sk-socket'},skull);
+el('path',{d:'M0,-16 L0,27',class:'sk-fine'},skull);
+el('path',{d:'M-8,4 C-12,8 -12,14 -9,18 M8,4 C12,8 12,14 9,18',class:'sk-fine'},skull);
+el('path',{d:'M0,-149 L0,-96 M0,-95 L0,-58',class:'sk-suture'},skull);
+el('path',{d:'M-90,-90 L-76,-98 L-62,-92 L-46,-100 L-30,-94 L-14,-101 L0,-95 L14,-101 L30,-94 L46,-100 L62,-92 L76,-98 L90,-90',class:'sk-suture'},skull);
+el('path',{d:'M-9,108 L0,102 L9,108',class:'sk-fine'},skull); // mental protuberance
+
+/* cervical vertebrae */
+for(let i=0;i<3;i++){
+  const y=124+i*13;
+  el('path',{d:`M-13,${y} C-19,${y+3} -18,${y+10} -11,${y+12} C-4,${y+14} 4,${y+14} 11,${y+12} C18,${y+10} 19,${y+3} 13,${y} C6,${y-3} -6,${y-3} -13,${y} Z`,class:'sk-plate'},skull);
+}
+
+/* clavicles and upper rib cage, fading into the page */
+const torso=el('g',{id:'skTorso'},skull);
+el('path',{d:'M-6,150 C-30,140 -60,142 -84,154 C-92,158 -98,166 -100,174',class:'sk-line'},torso);
+for(let i=0;i<4;i++){
+  const y=164+i*18;
+  el('path',{d:`M-12,${y} C-42,${y-10} -72,${y-2} -80,${y+16} C-70,${y+28} -40,${y+26} -10,${y+18}`,class:'sk-rib'},torso);
+}
+el('use',{href:'#skTorso',transform:'scale(-1,1)'},skull);
+el('path',{d:'M0,158 C-7,158 -9,166 -8,176 L-6,208 C-5,214 5,214 6,208 L8,176 C9,166 7,158 0,158 Z',class:'sk-plate'},skull);
 
 document.body.prepend(host);
 
