@@ -1,0 +1,31 @@
+/* ---- theme system: mode + intensity (--k) ---- */
+:root{--k:0%;--surface:var(--card)}
+[data-theme=light]{--bg:color-mix(in srgb,#ffffff var(--k),#e9dfcc);--card:color-mix(in srgb,#ffffff var(--k),#f3ead9);--surface:var(--card);--line:color-mix(in srgb,#e8e8ee var(--k),#dccfb8);--text:color-mix(in srgb,#0b0b10 var(--k),#2e2a26);--muted:color-mix(in srgb,#55555f var(--k),#6f665b);--navbg:color-mix(in srgb,var(--bg) 85%,transparent);--mark:#ffd84d;color-scheme:light}
+[data-theme=dark]{--bg:color-mix(in srgb,#000000 var(--k),#2a2c33);--card:color-mix(in srgb,#0e0e11 var(--k),#353841);--surface:var(--card);--line:color-mix(in srgb,#1e1e24 var(--k),#4a4d57);--text:color-mix(in srgb,#f5f5f7 var(--k),#d2d3d8);--muted:color-mix(in srgb,#9b9ba6 var(--k),#a6a8b0);--navbg:color-mix(in srgb,var(--bg) 82%,transparent);--mark:rgba(255,200,60,.38);color-scheme:dark}
+[data-theme=dark] #research .grid .card:nth-child(1){background:color-mix(in srgb,#2fbf95 12%,var(--card))}
+[data-theme=dark] #research .grid .card:nth-child(2){background:color-mix(in srgb,#7d86ff 12%,var(--card))}
+[data-theme=dark] #research .grid .card:nth-child(3){background:color-mix(in srgb,#ff8a5c 12%,var(--card))}
+[data-theme=dark] #research .grid .card:nth-child(4){background:color-mix(in srgb,#b57dff 12%,var(--card))}
+[data-theme=dark] .pill.talk{color:#6ee7c8;border-color:rgba(110,231,200,.3);background:rgba(110,231,200,.08)}
+[data-theme=dark] .sw-col li{background:rgba(110,231,200,.1);color:#8eeed4}
+[data-theme=dark] .sw-col.want li{background:rgba(255,140,100,.1);color:#ffab8a;border-color:rgba(255,140,100,.4)}
+[data-theme=dark] .clist li:hover,[data-theme=dark] .skills span:hover,[data-theme=dark] .soc:hover{background:color-mix(in srgb,var(--accent) 12%,var(--card))!important}
+[data-theme=dark] .chip.on,[data-theme=dark] .soc::after{color:var(--bg)}[data-theme=dark] .chip.on span{color:color-mix(in srgb,var(--bg) 70%,transparent)}
+[data-theme=dark] .card,[data-theme=dark] .pub,[data-theme=dark] .clist,[data-theme=dark] .swap,[data-theme=dark] .facts div{box-shadow:0 0 0 1px var(--line),0 8px 24px rgba(0,0,0,.25)}
+[data-theme=dark] #worldmap .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.85) contrast(.9)}
+[data-theme=dark] .leaflet-control-attribution{background:rgba(0,0,0,.6)!important;color:#aaa!important}
+[data-theme=dark] .btn.primary:hover{background:#c9431f}
+#tbtn{flex:none;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--text);display:grid;place-items:center;cursor:pointer;font-size:15px;line-height:1;transition:transform .3s,border-color .2s}
+#tbtn:hover{border-color:var(--accent);transform:rotate(20deg)}
+#tpanel{position:fixed;top:64px;right:16px;z-index:70;width:230px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,.18);font-size:.85rem;opacity:0;transform:translateY(-6px);pointer-events:none;transition:opacity .2s,transform .2s}
+#tpanel.open{opacity:1;transform:none;pointer-events:auto}
+#tpanel .seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:3px;border-radius:10px;background:var(--bg);margin-bottom:14px}
+#tpanel .seg button{font:inherit;border:0;border-radius:8px;padding:6px;background:transparent;color:var(--muted);cursor:pointer}
+#tpanel .seg button[aria-pressed=true]{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.15)}
+#tpanel label{display:flex;justify-content:space-between;color:var(--muted);margin-bottom:6px}
+#tpanel input{width:100%;accent-color:var(--accent)}
+#tpanel .ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted)}
+/* footer icons: brand SVGs are dark-coloured images, so lighten them in dark mode */
+[data-theme=dark] .soc{box-shadow:0 0 0 1px var(--line),0 4px 14px rgba(0,0,0,.35)}
+[data-theme=dark] .soc img{filter:invert(1) brightness(1.6) grayscale(1)}
+[data-theme=dark] .soc .socfb{color:var(--text)}

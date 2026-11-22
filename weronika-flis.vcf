@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Flis;Weronika;;;
+FN:Weronika Flis
+TITLE:PhD Candidate in Biological Anthropology & Forensic Anthropologist
+ORG:Jagiellonian University;Faculty of Biology;Doctoral School of Exact and Natural Sciences
+EMAIL;TYPE=INTERNET,WORK:weronika.flis@doctoral.uj.edu.pl
+TEL;TYPE=CELL:+48 883 943 769
+URL:https://weronika-flis.github.io/
+URL:https://www.linkedin.com/in/weronika-flis-36a1132aa/
+URL:https://www.researchgate.net/profile/Weronika-Flis
+ADR;TYPE=WORK:;;Gronostajowa 7;Kraków;Małopolska;30-387;Poland
+NOTE:Biological Anthropology, Forensic Osteology, Cranial Sexual Dimorphism, 3D Facial Reconstruction
+END:VCARD

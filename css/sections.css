@@ -1,0 +1,57 @@
+/* ---- Section backgrounds: soft botanical motifs, tinted per section, theme-aware ---- */
+:root{
+  --m-flower:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill-opacity='.55'%3E%3Cellipse rx='12' ry='25' cy='-23'/%3E%3Cellipse rx='12' ry='25' cy='-23' transform='rotate(72)'/%3E%3Cellipse rx='12' ry='25' cy='-23' transform='rotate(144)'/%3E%3Cellipse rx='12' ry='25' cy='-23' transform='rotate(216)'/%3E%3Cellipse rx='12' ry='25' cy='-23' transform='rotate(288)'/%3E%3C/g%3E%3Ccircle r='8'/%3E%3C/svg%3E");
+  --m-daisy:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-50 -50 100 100'%3E%3Cg fill-opacity='.5'%3E%3Cellipse rx='5' ry='20' cy='-27'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(30)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(60)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(90)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(120)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(150)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(180)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(210)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(240)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(270)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(300)'/%3E%3Cellipse rx='5' ry='20' cy='-27' transform='rotate(330)'/%3E%3C/g%3E%3Ccircle r='9'/%3E%3C/svg%3E");
+  --m-leaf:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 98 C50 70 48 40 52 4' fill='none' stroke='black' stroke-width='2'/%3E%3Cg fill-opacity='.55'%3E%3Cpath d='M50 80 C30 78 18 66 14 52 C30 54 44 62 50 80Z'/%3E%3Cpath d='M51 62 C70 60 82 48 86 34 C70 36 56 44 51 62Z'/%3E%3Cpath d='M50 44 C34 42 24 32 20 20 C34 22 46 30 50 44Z'/%3E%3Cpath d='M52 26 C64 24 72 16 74 6 C64 8 55 14 52 26Z'/%3E%3C/g%3E%3C/svg%3E");
+  --m-blossom:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill-opacity='.5'%3E%3Cg transform='translate(30 34)'%3E%3Ccircle r='7' cy='-9'/%3E%3Ccircle r='7' cy='-9' transform='rotate(72)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(144)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(216)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(288)'/%3E%3C/g%3E%3Cg transform='translate(70 62) scale(.75)'%3E%3Ccircle r='7' cy='-9'/%3E%3Ccircle r='7' cy='-9' transform='rotate(72)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(144)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(216)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(288)'/%3E%3C/g%3E%3Cg transform='translate(34 80) scale(.5)'%3E%3Ccircle r='7' cy='-9'/%3E%3Ccircle r='7' cy='-9' transform='rotate(72)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(144)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(216)'/%3E%3Ccircle r='7' cy='-9' transform='rotate(288)'/%3E%3C/g%3E%3C/g%3E%3Ccircle cx='30' cy='34' r='4'/%3E%3Ccircle cx='70' cy='62' r='3'/%3E%3Ccircle cx='34' cy='80' r='2'/%3E%3C/svg%3E");
+  --bloom-op:.32;   /* light theme: pastel petals */
+}
+[data-theme=dark]{--bloom-op:.10}
+
+section{position:relative;overflow:clip;isolation:isolate}
+section>.wrap{position:relative;z-index:1}
+section::before,section::after{content:"";position:absolute;z-index:0;pointer-events:none;
+  background:var(--petal,#e4572e);opacity:var(--bloom-op);
+  -webkit-mask:var(--mA) center/contain no-repeat;mask:var(--mA) center/contain no-repeat;
+  transition:opacity .6s,background-color .6s}
+section::before{width:340px;height:340px;top:-70px;right:-80px;animation:bloom-spin 90s linear infinite}
+section::after{--mA:var(--mB);width:200px;height:200px;bottom:-40px;left:-50px;animation:bloom-sway 14s ease-in-out infinite alternate}
+[data-theme=dark] section::before,[data-theme=dark] section::after{filter:drop-shadow(0 0 18px var(--petal))}
+
+/* per-section tint + motif pair */
+#research    {--petal:#3fbf9a;--mA:var(--m-flower); --mB:var(--m-leaf)}
+#publications{--petal:#9b87f5;--mA:var(--m-daisy);  --mB:var(--m-blossom)}
+#talks       {--petal:#5aa9f0;--mA:var(--m-blossom);--mB:var(--m-flower)}
+#map         {--petal:#5aa9f0;--mA:var(--m-leaf);   --mB:var(--m-daisy)}
+#background  {--petal:#f2a04a;--mA:var(--m-flower); --mB:var(--m-blossom)}
+#skills      {--petal:#9b87f5;--mA:var(--m-leaf);   --mB:var(--m-flower)}
+#projects    {--petal:#f07aa0;--mA:var(--m-blossom);--mB:var(--m-daisy)}
+#contact     {--petal:#3fbf9a;--mA:var(--m-daisy);  --mB:var(--m-leaf)}
+/* alternate sides so the page doesn't feel repetitive */
+section:nth-of-type(even)::before{right:auto;left:-90px}
+section:nth-of-type(even)::after{left:auto;right:-50px}
+
+@keyframes bloom-spin{to{transform:rotate(360deg)}}
+@keyframes bloom-sway{from{transform:rotate(-8deg) translateY(0)}to{transform:rotate(8deg) translateY(-14px)}}
+@media(max-width:560px){section::before{width:220px;height:220px}section::after{width:130px;height:130px}}
+@media(prefers-reduced-motion:reduce){section::before,section::after{animation:none}}
+
+/* ---- Page scene: scroll-grown tree + PET detector ring (js/14-scene.js) ---- */
+:root{--trunk:#8a6a4f;--leaf:#5fb98f;--bud:#f08fb0;--det:#e4572e;--scene-op:.22}
+[data-theme=dark]{--trunk:#a89580;--leaf:#4fd1a5;--bud:#ff9ec0;--det:#6ee7c8;--scene-op:.16}
+#scene{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:var(--scene-op);transition:opacity .6s}
+#scene .tree{overflow:visible;position:absolute;right:-4vw;bottom:0;height:100vh;width:min(48vw,620px)}
+#scene .br{fill:none;stroke:var(--trunk);stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+#scene .lf,#scene .bud{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .4s}
+#scene .lf{fill:var(--leaf);opacity:.8}#scene .bud{fill:var(--bud)}
+#scene .pet{position:absolute;left:-90px;top:50%;width:min(52vh,460px);translate:0 -50%;overflow:visible}
+#scene .rot{animation:bloom-spin 120s linear infinite}
+#scene .det{fill:var(--det);opacity:.75}
+#scene .bore{fill:none;stroke:var(--det);stroke-width:.6;stroke-dasharray:2 3;opacity:.6}
+#scene .lor{stroke:var(--det);stroke-width:1;opacity:0;animation:lor 1.6s ease-out forwards}
+#scene .ann{fill:var(--bud);opacity:0;animation:lor 1.6s ease-out forwards}
+@keyframes lor{10%{opacity:.95}100%{opacity:0}}
+/* flowers become a quieter accent now the scene carries the mood */
+:root{--bloom-op:.2}[data-theme=dark]{--bloom-op:.07}
+@media(max-width:700px){:root{--scene-op:.16}[data-theme=dark]{--scene-op:.12}#scene .tree{width:85vw;right:-30vw}#scene .pet{width:260px;top:auto;bottom:-110px;left:-110px;translate:none}#tpanel{right:12px;left:auto;width:min(230px,calc(100vw - 24px))}}
+@media(prefers-reduced-motion:reduce){#scene .rot{animation:none}#scene .lor,#scene .ann{animation:none;opacity:.4}}

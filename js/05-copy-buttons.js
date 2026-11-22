@@ -1,0 +1,1 @@
+document.querySelectorAll('.cp').forEach(b=>b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.copy).then(()=>{b.textContent='Copied ✓';setTimeout(()=>b.textContent='Copy',1600)})});
